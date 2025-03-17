@@ -690,10 +690,12 @@ def install(arch, bits, magisk_channel, workdir=None,
         with tempfile.TemporaryDirectory(dir=workdir) as tempdir:
             if not apk_path:
                 magisk = download_json(
-                    "https://raw.githubusercontent.com/HuskyDG/magisk-files/main/%s.json" % magisk_channel,
+                    "https://raw.githubusercontent.com/HuskyDG/magisk-files/master/%s.json" % magisk_channel,
                     "Kitsune Mask channels")
                 logging.info("Downloading Kitsune Mask: %s-%s" % (magisk_channel, magisk["magisk"]["version"]))
-                download_obj(magisk["magisk"]["link"], tempdir, "magisk-delta.apk")
+                link: str = magisk["magisk"]["link"]
+                link = link.replace("/main", "/master")
+                download_obj(link, tempdir, "magisk-delta.apk")
             else:
                 shutil.copyfile(apk_path, os.path.join(tempdir, "magisk-delta.apk"))
             logging.info("Extracting Kitsune Mask")
